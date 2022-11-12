@@ -797,7 +797,10 @@ static int ch341_irq_probe (struct ch341_device* ch341_dev)
 
     for (i = 0; i < ch341_dev->irq_num; i++)
     {
-        ch341_dev->irq_descs[i]   = irq_to_desc(ch341_dev->irq_base + i);
+	 /* ERROR: modpost: "irq_to_desc" [/home/sysghost/Sources/spi-ch341-usb/spi-ch341-usb.ko] undefined! */
+	/* link: https://github.com/gschorcht/spi-ch341-usb/issues/18#issuecomment-1052501411 */
+        // ch341_dev->irq_descs[i]   = irq_to_desc(ch341_dev->irq_base + i);
+	ch341_dev->irq_descs[i] = irq_data_to_desc( irq_get_irq_data(ch341_dev->irq_base + i) );
         ch341_dev->irq_enabled[i] = false;
         
         irq_set_chip          (ch341_dev->irq_base + i, &ch341_dev->irq);
